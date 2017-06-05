@@ -1,36 +1,42 @@
-$(document).ready(function(){
-  /** cambia de imágenes **/
-  $("input[type='radio']").click(function(){
-    changeImg($(this).val());
-  });
+$(document).ready(function () {
 
-  /** cambio de imágenes por control siguiente **/
-  var index = 1;
-  $(".next").click(function() {
-    index++;
-    if(index == 6){index = 1; }
-    changeImg(index);
-  });
+		var index = 0;
+		showImage(index);
 
-  /** cambio de imágenes por control antes **/
-  $(".prev").click(function() {
-    index--;
-    if(index == 0){index = 5; }
-    changeImg(index);
-  });
+		/** cambio de imágenes por control antes **/
+		$(".prev").click(function () {
+				hideImage(index);
+				index--;
+				if (index == -1) {index = 4;}
+				showImage(index);
+		});
 
-  function changeImg(index){
-    $("img").attr("src","assets/img/img"+index+".jpg");
-    $("input[value="+index+"]").prop("checked","checked");
-  }
+		/** cambio de imágenes por control siguiente **/
+		$(".next").click(nextImage);
 
-  function changeImgAuto(){
-    index++;
-    if(index == 6){index = 1; }
-    $("img").attr("src","assets/img/img"+index+".jpg");
-    $("input[value="+index+"]").prop("checked","checked");
+		/** cambia de imágenes por input radio **/
+		$("input[type='radio']").click(function () {
+				hideImage(index);
+				index = $(this).val();
+				showImage(index);
+		});
 
-  }
+		/** cambia de imàgen cada 5 segundos **/
+		setInterval(nextImage, 5000);
 
-  setTimeout(changeImgAuto(), 2000);
+		function nextImage() {
+				hideImage(index);
+				index++;
+				if (index == 5) {index = 0;}
+				showImage(index);
+		}
+
+		function hideImage(index) {
+				$((".container-img div:eq(" + index + ")")).css("display", "none");
+		}
+
+		function showImage(index) {
+				$((".container-img div:eq(" + index + ")")).fadeIn("slow");
+				$("input[value=" + index + "]").prop("checked", "checked");
+		}
 });
